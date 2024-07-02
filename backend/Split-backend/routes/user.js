@@ -1,9 +1,8 @@
-require('dotenv').config();
 var express = require('express');
 var router = express.Router();
 
-/* POST login. */
-router.post('/', function(req, res, next) {
+/* GET user. */
+router.get('/', function(req, res, next) {
   const { MongoClient, ServerApiVersion } = require('mongodb');
   const uri = process.env.MONGODB_URI;
   const client = new MongoClient(uri, {
@@ -21,17 +20,19 @@ router.post('/', function(req, res, next) {
       const database = client.db('test');
       const collection = database.collection('users');
       const query = { user_id: req.body.user_id };
-      const user = await collection.findOne(query);
-      if (!user) {
-        console.log("User not found. Creating new user.")
-        const query = { user_id: req.body.user_id, display_name: req.body.display_name, email: req.body.email, groups: [] };
-        await collection.insertOne(query);
+      var user = await collection.findOne(query);
+      if (user) {
+        delete user._id;
+        res.send(user);
+      } else {
+        const response = { message: "User not found." };
+        res.send(response);
+        console.log("User not found.")
       }
-      const response = { message: "Success." };
-      res.send(response);
     } catch (e) {
       const response = { message: e.message };
       res.send(response);
+      console.error(e);
     } finally {
       console.log("Closing the database connection.");
       await client.close();
