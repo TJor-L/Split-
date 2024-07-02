@@ -22,14 +22,14 @@ router.post('/', function(req, res, next) {
       const database = client.db('test');
       const collection = database.collection('users');
       const query = { user_id: req.body.user_id };
-      const user = await collection.findOne(query);
+      var user = await collection.findOne(query);
       if (!user) {
         console.log("User not found. Creating new user.")
         const query = { user_id: req.body.user_id, display_name: req.body.display_name, email: req.body.email, groups: [] };
-        await collection.insertOne(query);
+        user = collection.insertOne(query);
       }
-      const response = { message: "Success." };
-      res.send(response);
+      delete user._id;
+      res.send(user);
     } catch (e) {
       const response = { message: e.message };
       res.send(response);

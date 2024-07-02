@@ -17,11 +17,17 @@
 #### Response parameters
 |parameter|type|description|
 |---|---|---|
-|message|string|"Success." if the request is successful. Otherwise, this will be an error message.|
+|user_id|string|The ID of the user.|
+|display_name|string|The display name of the user.|
+|email|string|The email of the user.|
+|groups|string[]|The IDs of the groups of the user.|
 #### Response example
 ```json
 {
-    "message": "Success."
+    "user_id": "test",
+    "display_name": "test",
+    "email": "test@test.com",
+    "groups": ["group ID 1", "group ID 2"]
 }
 ```
 
