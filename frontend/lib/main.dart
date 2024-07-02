@@ -8,12 +8,13 @@ import 'screens/profile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const Split());
 }
 
@@ -46,9 +47,8 @@ class Split extends StatelessWidget {
 }
 
 class MainScreen extends StatefulWidget {
-
   const MainScreen({super.key});
-    // 主屏幕， stateful widget， 用于切换不同的屏幕
+  // 主屏幕， stateful widget， 用于切换不同的屏幕
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     //主屏幕的所有页面
-    GoogleButton(),  //主屏幕的所有页面
+    GoogleButton(), //主屏幕的所有页面
     HomeScreen(),
     GroupScreen(),
     ScanScreen(),
@@ -81,7 +81,8 @@ class _MainScreenState extends State<MainScreen> {
           _buildBottomNavigationBarSvgItem('assets/icons/home.svg', 'Home', 0),
           _buildBottomNavigationBarItem(Icons.group, 'Groups', 1),
           _buildBottomNavigationBarSvgItem('assets/icons/scan.svg', 'Scan', 2),
-          _buildBottomNavigationBarItem(Icons.notifications, 'Notifications', 3),
+          _buildBottomNavigationBarItem(
+              Icons.notifications, 'Notifications', 3),
           _buildBottomNavigationBarItem(Icons.person, 'Profile', 4),
         ],
         currentIndex: _selectedIndex,
@@ -115,7 +116,8 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  BottomNavigationBarItem _buildBottomNavigationBarSvgItem(String assetName, String label, int index) {
+  BottomNavigationBarItem _buildBottomNavigationBarSvgItem(
+      String assetName, String label, int index) {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset(
         assetName,
@@ -126,5 +128,4 @@ class _MainScreenState extends State<MainScreen> {
       label: label,
     );
   }
-
 }
