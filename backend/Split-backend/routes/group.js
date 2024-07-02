@@ -2,17 +2,18 @@ require('dotenv').config();
 var express = require('express');
 var router = express.Router();
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
 /* GET group. */
 router.get('/', function(req, res, next) {
-  const { MongoClient, ServerApiVersion } = require('mongodb');
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
   async function run() {
     try {
       // Connect to the MongoDB cluster.
@@ -44,15 +45,6 @@ router.get('/', function(req, res, next) {
 
 /* POST create group. */
 router.post('/create', function(req, res, next) {
-  const { MongoClient, ServerApiVersion } = require('mongodb');
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
   async function run() {
     try {
       // Connect to the MongoDB cluster.
@@ -98,15 +90,6 @@ router.post('/create', function(req, res, next) {
 
 /* POST add user. */
 router.post('/add', function(req, res, next) {
-  const { MongoClient, ServerApiVersion } = require('mongodb');
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
   async function run() {
     try {
       // Connect to the MongoDB cluster.
@@ -160,15 +143,6 @@ router.post('/add', function(req, res, next) {
 
 /* POST remove user. */
 router.post('/remove', function(req, res, next) {
-  const { MongoClient, ServerApiVersion } = require('mongodb');
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
   async function run() {
     try {
       // Connect to the MongoDB cluster.

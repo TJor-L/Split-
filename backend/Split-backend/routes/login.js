@@ -2,17 +2,18 @@ require('dotenv').config();
 var express = require('express');
 var router = express.Router();
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
 /* POST login. */
 router.post('/', function(req, res, next) {
-  const { MongoClient, ServerApiVersion } = require('mongodb');
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
   async function run() {
     try {
       // Connect to the MongoDB cluster.

@@ -1,17 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
 /* GET user. */
 router.get('/', function(req, res, next) {
-  const { MongoClient, ServerApiVersion } = require('mongodb');
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
   async function run() {
     try {
       // Connect to the MongoDB cluster.
