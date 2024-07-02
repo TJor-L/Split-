@@ -23,6 +23,15 @@
     "user_id": "test",
     "display_name": "test",
     "email": "test@test.com",
+    "friends": [
+        {
+            "user_id": "friend ID 1",
+            "display_name": "friend 1"
+        }, {
+            "user_id": "friend ID 2",
+            "display_name": "friend 2"
+        }
+    ],
     "groups": ["group ID 1", "group ID 2"]
 }
 ```
@@ -56,7 +65,66 @@
     "user_id": "test",
     "display_name": "test",
     "email": "test@test.com",
+    "friends": [
+        {
+            "user_id": "friend ID 1",
+            "display_name": "friend 1"
+        }, {
+            "user_id": "friend ID 2",
+            "display_name": "friend 2"
+        }
+    ],
     "groups": ["group ID 1", "group ID 2"]
+}
+```
+
+# Add a friend
+### POST /user/add-friend
+#### Request parameters
+|parameter|type|required|description|
+|---|---|---|---|
+|user_id|string|true|The ID of the user.|
+|friend_id|string|true|The ID of the friend.|
+#### Request example
+```json
+{
+    "user_id": "test",
+    "friend_id": "friend ID"
+}
+```
+#### Reponse parameters
+|parameter|type|description|
+|---|---|---|
+|message|string|"Success." if the request is successful. Otherwise, this will be an error message.|
+#### Response example
+```json
+{
+    "message": "Success."
+}
+```
+
+# Remove a friend
+### POST /user/remove-friend
+#### Request parameters
+|parameter|type|required|description|
+|---|---|---|---|
+|user_id|string|true|The ID of the user.|
+|friend_id|string|true|The ID of the friend to be removed.|
+#### Request example
+```json
+{
+    "user_id": "test",
+    "friend_id": "friend ID"
+}
+```
+#### Reponse parameters
+|parameter|type|description|
+|---|---|---|
+|message|string|"Success." if the request is successful. Otherwise, this will be an error message.|
+#### Response example
+```json
+{
+    "message": "Success."
 }
 ```
 
