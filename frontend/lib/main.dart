@@ -12,9 +12,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  //await Firebase.initializeApp(
+  //  options: DefaultFirebaseOptions.currentPlatform,
+  //);
   runApp(const Split());
 }
 
@@ -58,8 +58,8 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     //主屏幕的所有页面
-    GoogleButton(), //主屏幕的所有页面
-    HomeScreen(),
+    //GoogleButton(), //主屏幕的所有页面
+    AllBillsScreen(),
     GroupScreen(),
     ScanScreen(),
     NotificationScreen(),
