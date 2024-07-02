@@ -1,17 +1,13 @@
-# Login a user
-### POST /login
+# Get the information of a user
+### GET /user
 #### Request parameters
 |parameter|type|required|description|
 |---|---|---|---|
-|user_id|string|true|The user ID returned by the Google login API.|
-|display_name|string|true|The display name returned by the Google login API.|
-|email|string|true|The email returned by the google login API.|
+|user_id|string|true|The ID of the user.|
 #### Request example
 ```json
 {
-    "user_id": "test ID",
-    "display_name": "test name",
-    "email": "test@test.com"
+    "user_id": "test"
 }
 ```
 #### Response parameters
@@ -31,16 +27,20 @@
 }
 ```
 
-# Get the information of a user
-### GET /user
+# Login a user
+### POST /user/login
 #### Request parameters
 |parameter|type|required|description|
 |---|---|---|---|
-|user_id|string|true|The ID of the user.|
+|user_id|string|true|The user ID returned by the Google login API.|
+|display_name|string|true|The display name returned by the Google login API.|
+|email|string|true|The email returned by the google login API.|
 #### Request example
 ```json
 {
-    "user_id": "test"
+    "user_id": "test ID",
+    "display_name": "test name",
+    "email": "test@test.com"
 }
 ```
 #### Response parameters
