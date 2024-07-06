@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/create_group.dart';
 import 'package:frontend/screens/login.dart';
 import 'screens/home.dart';
 import 'screens/groups.dart';
@@ -60,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
     //主屏幕的所有页面
     //GoogleButton(), //主屏幕的所有页面
     AllBillsScreen(),
-    GroupScreen(),
+    CreateGroup(),
     ScanScreen(),
     NotificationScreen(),
     ProfileScreen(),
