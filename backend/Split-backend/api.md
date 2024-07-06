@@ -92,14 +92,29 @@
     "friend_id": "friend ID"
 }
 ```
-#### Reponse parameters
+#### Response parameters
 |parameter|type|description|
 |---|---|---|
-|message|string|"Success." if the request is successful. Otherwise, this will be an error message.|
+|user_id|string|The ID of the user.|
+|display_name|string|The display name of the user.|
+|email|string|The email of the user.|
+|groups|string[]|The IDs of the groups of the user.|
 #### Response example
 ```json
 {
-    "message": "Success."
+    "user_id": "test",
+    "display_name": "test",
+    "email": "test@test.com",
+    "friends": [
+        {
+            "user_id": "friend ID 1",
+            "display_name": "friend 1"
+        }, {
+            "user_id": "friend ID 2",
+            "display_name": "friend 2"
+        }
+    ],
+    "groups": ["group ID 1", "group ID 2"]
 }
 ```
 
@@ -117,14 +132,29 @@
     "friend_id": "friend ID"
 }
 ```
-#### Reponse parameters
+#### Response parameters
 |parameter|type|description|
 |---|---|---|
-|message|string|"Success." if the request is successful. Otherwise, this will be an error message.|
+|user_id|string|The ID of the user.|
+|display_name|string|The display name of the user.|
+|email|string|The email of the user.|
+|groups|string[]|The IDs of the groups of the user.|
 #### Response example
 ```json
 {
-    "message": "Success."
+    "user_id": "test",
+    "display_name": "test",
+    "email": "test@test.com",
+    "friends": [
+        {
+            "user_id": "friend ID 1",
+            "display_name": "friend 1"
+        }, {
+            "user_id": "friend ID 2",
+            "display_name": "friend 2"
+        }
+    ],
+    "groups": ["group ID 1", "group ID 2"]
 }
 ```
 
@@ -199,11 +229,18 @@
 #### Response parameters
 |parameter|type|description|
 |---|---|---|
-|message|string|"Success." if the request is successful. Otherwise, this will be an error message.|
+|name|string|The name of the group.|
+|members|string[]|The IDs of the members of the group.|
+|group_id|string|The ID of the group.|
 #### Response example
 ```json
 {
-    "message": "Success."
+    "name": "test group",
+    "members": [
+        "test 1",
+        "test 2"
+    ],
+    "group_id": "group ID"
 }
 ```
 
@@ -224,10 +261,17 @@
 #### Response parameters
 |parameter|type|description|
 |---|---|---|
-|message|string|"Success." if the request is successful. Otherwise, this will be an error message.|
+|name|string|The name of the group.|
+|members|string[]|The IDs of the members of the group.|
+|group_id|string|The ID of the group.|
 #### Response example
 ```json
 {
-    "message": "Success."
+    "name": "test group",
+    "members": [
+        "test 1",
+        "test 2"
+    ],
+    "group_id": "group ID"
 }
 ```
