@@ -16,7 +16,7 @@ class CreateGroup extends StatefulWidget {
 class _CreateGroupState extends State<CreateGroup> {
   /// url to be replaced
   String add_user_url = "add_user_url?";
-  String add_group_url = "https://jsonplaceholder.typicode.com/albums";
+  String add_group_url = "add_group_url";
 
   ///
   final _addMemberController = TextEditingController();
@@ -78,16 +78,15 @@ class _CreateGroupState extends State<CreateGroup> {
   }
 
   Future<void> handleSubmit() async {
-    if (_addMemberController.text.trim().isEmpty) {
-      print("Email cannot be empty!");
+    if (memberList.isEmpty) {
+      print("member list cannot be empty!");
       return;
     }
 
-    print(_addMemberController.text);
-
-    String jsonBody = jsonEncode(<String, List>{'email_list': memberList});
+    String jsonBody = jsonEncode(<String, List>{'member_list': memberList});
 
     Response response = await sendPost(add_group_url, jsonBody);
+    print(response.body);
   }
 
   @override
