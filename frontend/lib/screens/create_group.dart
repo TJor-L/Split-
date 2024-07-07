@@ -14,19 +14,24 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  final _addMemberController = TextEditingController();
-  List<String> memberList = ['asds', 'as3'];
+  /// url to be replaced
+  String add_user_url = "add_user_url?";
+  String add_group_url = "https://jsonplaceholder.typicode.com/albums";
 
-  void addString(String value) {
+  ///
+  final _addMemberController = TextEditingController();
+  List<SplitUser> memberList = [];
+
+  void addString(SplitUser user) {
     setState(() {
-      memberList.add(value);
+      memberList.add(user);
     });
     _addMemberController.clear();
   }
 
-  void removeString(String value) {
+  void removeString(SplitUser user) {
     setState(() {
-      memberList.remove(value);
+      memberList.remove(user);
     });
   }
 
@@ -43,14 +48,33 @@ class _CreateGroupState extends State<CreateGroup> {
     }
     String memberEmail = _addMemberController.text.trim();
     print(memberEmail);
-    addString(memberEmail);
 
-    // String jsonBody =
-    //     jsonEncode(<String, String>{'email': _addMemberController.text.trim()});
-    // String add_user_url =
-    //     "https://jsonplaceholder.typicode.com/albums"; //should replace with real post url
-    // Response response = await sendPost(add_user_url, jsonBody);
-    // _addMemberController.clear();
+    String jsonBody =
+        jsonEncode(<String, String>{'email': _addMemberController.text.trim()});
+    Response response = await sendPost(add_user_url, jsonBody);
+    if (response.statusCode == 201) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      print(response.body);
+      Map<String, dynamic> add_msg = jsonDecode(response.body);
+      if (add_msg['success'] == "yes") {
+        String curDisplayName = add_msg['display_name'];
+        String curUserId = add_msg['user_id'];
+        String curUserEmail = add_msg['email'];
+        SplitUser curUser = SplitUser(
+            userId: curUserId,
+            displayName: curDisplayName,
+            email: curUserEmail);
+
+        addString(curUser);
+      } else {
+        print("add failed");
+      }
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to create user.');
+    }
   }
 
   Future<void> handleSubmit() async {
@@ -62,8 +86,7 @@ class _CreateGroupState extends State<CreateGroup> {
     print(_addMemberController.text);
 
     String jsonBody = jsonEncode(<String, List>{'email_list': memberList});
-    String add_group_url =
-        "https://jsonplaceholder.typicode.com/albums"; //should replace with real post url
+
     Response response = await sendPost(add_group_url, jsonBody);
   }
 
@@ -84,7 +107,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     itemBuilder: (contex, index) {
                       return InkWell(
                           onTap: () => removeString(memberList[index]),
-                          child: NameTag(str: memberList[index]));
+                          child: NameTag(str: memberList[index].displayName));
                     })),
             const Divider(
               thickness: 1,
@@ -114,6 +137,7 @@ class _CreateGroupState extends State<CreateGroup> {
                 ),
               ],
             ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: handleSubmit,
               child: Text('Submit'),
