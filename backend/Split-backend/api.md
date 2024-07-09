@@ -478,7 +478,7 @@ note: a member can only be removed if they have no uncompleted transaction in th
 }
 ```
 
-# Mark a transcation as completed.
+# Mark a transcation as completed
 ### POST /transaction/complete
 |parameter|type|required|description|
 |---|---|---|---|
