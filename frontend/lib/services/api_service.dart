@@ -43,6 +43,34 @@ Future<SplitUser> createUser(
   }
 }
 
+Future<void> handleAccept(Map<String, String> notification) async {
+  String jsonBody = jsonEncode(notification);
+  final response =
+  await sendPost('https://yourapi.com/accept', jsonBody);
+
+  if (response.statusCode == 200) {
+    // Handle success
+    print('Accepted ${notification['user']} request');
+    } else {
+    // Handle error
+    throw Exception('Failed to accept request.');
+    }
+    }
+
+Future<void> handleDecline(Map<String, String> notification) async {
+  String jsonBody = jsonEncode(notification);
+  final response =
+  await sendPost('https://yourapi.com/decline', jsonBody);
+
+  if (response.statusCode == 200) {
+    // Handle success
+    print('Declined ${notification['user']} request');
+    } else {
+    // Handle error
+    throw Exception('Failed to decline request.');
+    }
+    }
+
 class SplitUser {
   final String userId;
   final String displayName;
