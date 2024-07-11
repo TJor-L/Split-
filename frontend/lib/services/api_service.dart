@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/groups.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -17,7 +18,7 @@ Future<Response> sendPost(String url, String json_body) async {
   return response;
 }
 
-Future<SplitUser> createUser(
+Future<Map<String, dynamic>> createUser(
   String userId,
   String displayName,
   String email,
@@ -34,8 +35,8 @@ Future<SplitUser> createUser(
     // If the server did return a 201 CREATED response,
     // then parse the JSON.
     print(response.body);
-    return SplitUser.fromJson(
-        jsonDecode(response.body) as Map<String, dynamic>);
+    Map<String, dynamic> add_msg = jsonDecode(response.body);
+    return add_msg;
   } else {
     // If the server did not return a 201 CREATED response,
     // then throw an exception.
@@ -64,4 +65,18 @@ class SplitUser {
           ),
         _ => throw FormatException('Failed to load SplitUser.'),
       };
+}
+
+class InfoInitialization {
+  ValueNotifier<SplitUser?> currentUser = ValueNotifier<SplitUser?>(null);
+  List<String> groupIds = [];
+
+  void updateCurrentUser(SplitUser? user) {
+    currentUser.value = user;
+  }
+
+  // Function to get the current user
+  SplitUser? getCurrentUser() {
+    return currentUser.value;
+  }
 }
