@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/create_group.dart';
 import 'package:frontend/screens/login.dart';
+import 'package:frontend/services/api_service.dart';
 import 'screens/home.dart';
 import 'screens/groups.dart';
 import 'screens/scan.dart';
@@ -10,6 +11,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+export 'main.dart' show initialInfo;
+
+InfoInitialization initialInfo = InfoInitialization();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
