@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/services/api_service.dart';
 import 'package:frontend/services/google_auth.dart';
 import 'package:frontend/services/api_service.dart';
+import 'package:http/http.dart';
 
 class GoogleButton extends StatelessWidget {
   const GoogleButton({super.key});
@@ -24,17 +26,15 @@ class GoogleButton extends StatelessWidget {
             String userId = user.uid;
             String? displayName = user.displayName;
             String? email = user.email;
-            // ... access other user properties as needed
-
-            // Print user information
-            print('User signed in successfully.');
-            print('User ID: $userId');
-            print('Display Name: $displayName');
-            print('Email: $email');
             if (displayName != null && email != null) {
-              SplitUser currentUser =
+              Map<String, dynamic> res =
                   await createUser(userId, displayName, email);
-              print(currentUser.userId); //test printing returned user name
+              SplitUser currentUser = new SplitUser(
+                  userId: res['user_id'],
+                  displayName: res['display_name'],
+                  email: res['email']);
+              initialInfo.groupIds = res['groups'];
+              initialInfo.updateCurrentUser(currentUser);
             } else {
               print('Sign-in failed. User name or email is Null!');
               return null;

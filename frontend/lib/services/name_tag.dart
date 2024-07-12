@@ -13,9 +13,9 @@ class NameTag extends StatelessWidget {
           Stack(
             children: [
               Container(
-                // padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 decoration: const BoxDecoration(
-                  color: Color(0xFFE6E0EE), // Filled background color
+                  color: Color(0xFFE6E0EE), //traditional light purple
                 ),
                 child: Text(
                   str,
