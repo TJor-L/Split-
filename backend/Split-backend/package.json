@@ -13,6 +13,7 @@
     "http-errors": "~1.6.3",
     "mongodb": "^6.7.0",
     "morgan": "~1.9.1",
+    "openai": "^4.52.7",
     "pug": "2.0.0-beta11"
   }
 }
