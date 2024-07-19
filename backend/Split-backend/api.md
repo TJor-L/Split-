@@ -400,6 +400,19 @@ note: a member can only be removed if they have no uncompleted transaction in th
 }
 ```
 
+# Get the information of a bill from ChatGPT-4o
+### GET /model
+note: this interface is untested, so examples are not provided.
+#### Request parameters
+|parameter|type|required|descriptoin|
+|---|---|---|---|
+|image|file|true|The image file.
+#### Response parameter
+|parameter|type|description|
+|---|---|---|
+|success|bool|Whether the operation has succeeded.|
+|text|string|The response of ChatGPT-4o.|
+
 # Get the information of a transaction
 ### GET /transaction
 #### Request parameters

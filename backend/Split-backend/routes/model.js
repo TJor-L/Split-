@@ -36,7 +36,8 @@ router.get('/', function(req, res, next) {
       formData: postData
     }, function (error, response, body) {
       if (error) {
-        console.error('Error:', error);
+        const response = { success: false, message: error.message };
+        res.send(response);
         return;
       }
       img_url = JSON.parse(body).data.links.url;
@@ -61,7 +62,8 @@ router.get('/', function(req, res, next) {
         }
       ]
     });
-    res.send({'success': true, 'text': response.data.choices[0]});
+    response = { success: true, data: response.data.choices[0] }
+    res.send(response);
   }
   run().catch(console.dir);
 });
