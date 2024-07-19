@@ -1,7 +1,6 @@
-import OpenAI from 'openai';
-
 require('dotenv').config();
 var express = require('express');
+var openai = require('openai');
 var request = require('request');
 var router = express.Router();
 
@@ -15,7 +14,7 @@ const client = new MongoClient(uri, {
   }
 });
 
-const openai = new OpenAI();
+const openai_client = new openai.OpenAI();
 
 /* GET the information of a bill from a model */
 router.get('/', function(req, res, next) {
@@ -32,7 +31,7 @@ router.get('/', function(req, res, next) {
     }
     var img_url;
     request.post({
-      url: 'https://api.picui.com/v1/upload',
+      url: 'https://www.picui.cn/v1/upload',
       headers: header,
       formData: postData
     }, function (error, response, body) {
@@ -44,7 +43,7 @@ router.get('/', function(req, res, next) {
     });
 
     // Get the information of the bill from ChatGPT-4o.
-    var response = await openai.chat.completions.create({
+    var response = await openai_client.chat.completions.create({
       model: 'gpt-4o',
       response_format: { type: 'json_object' },
       messages: [
