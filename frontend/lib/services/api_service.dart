@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/groups.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:frontend/config.dart';
+
+
+final String _baseUrl = BASE_URL;
+final int _port = PORT;
 
 Future<Response> sendPost(String url, String json_body) async {
   final response = await http.post(
@@ -47,7 +52,7 @@ Future<Map<String, dynamic>> createUser(
 Future<void> handleAccept(Map<String, String> notification) async {
   String jsonBody = jsonEncode(notification);
   final response =
-  await sendPost('https://yourapi.com/accept', jsonBody);
+  await sendPost('$_baseUrl:$_port/accept', jsonBody);
 
   if (response.statusCode == 200) {
     // Handle success
@@ -61,7 +66,7 @@ Future<void> handleAccept(Map<String, String> notification) async {
 Future<void> handleDecline(Map<String, String> notification) async {
   String jsonBody = jsonEncode(notification);
   final response =
-  await sendPost('https://yourapi.com/decline', jsonBody);
+  await sendPost('$_baseUrl:$_port/decline', jsonBody);
 
   if (response.statusCode == 200) {
     // Handle success
