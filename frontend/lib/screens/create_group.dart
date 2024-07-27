@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
+import 'package:frontend/screens/groups.dart';
 import 'package:frontend/services/api_service.dart';
 import 'package:frontend/services/name_tag.dart';
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class CreateGroup extends StatefulWidget {
@@ -16,10 +19,11 @@ class CreateGroup extends StatefulWidget {
 class _CreateGroupState extends State<CreateGroup> {
   /// url to be replaced
   String add_user_url = "add_user_url?";
-  String add_group_url = "add_group_url";
+  String add_group_url = "add_group_url?";
 
   ///
   final _addMemberController = TextEditingController();
+  final _groupNameController = TextEditingController();
   List<SplitUser> memberList = [];
 
   void addString(SplitUser user) {
@@ -38,26 +42,43 @@ class _CreateGroupState extends State<CreateGroup> {
   @override
   void dispose() {
     _addMemberController.dispose();
+    _groupNameController.dispose();
     super.dispose();
   }
 
   Future<void> handleAdd() async {
     if (_addMemberController.text.trim().isEmpty) {
-      print("Email cannot be empty!");
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              content: const Text("Missing Added Member Email"),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    child: const Text("close"))
+              ],
+              actionsAlignment: MainAxisAlignment.center,
+            );
+          });
       return;
     }
     String memberEmail = _addMemberController.text.trim();
     print(memberEmail);
-
-    String jsonBody =
-        jsonEncode(<String, String>{'email': _addMemberController.text.trim()});
-    Response response = await sendPost(add_user_url, jsonBody);
-    if (response.statusCode == 201) {
+    final queryParameters = {
+      'email': memberEmail,
+    };
+    final uri =
+        Uri.parse(add_user_url).replace(queryParameters: queryParameters);
+    final response = await http.get(uri);
+    if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       print(response.body);
       Map<String, dynamic> add_msg = jsonDecode(response.body);
-      if (add_msg['success'] == "yes") {
+      if (add_msg['success'] == true) {
         String curDisplayName = add_msg['display_name'];
         String curUserId = add_msg['user_id'];
         String curUserEmail = add_msg['email'];
@@ -65,7 +86,6 @@ class _CreateGroupState extends State<CreateGroup> {
             userId: curUserId,
             displayName: curDisplayName,
             email: curUserEmail);
-
         addString(curUser);
       } else {
         print("add failed");
@@ -79,14 +99,76 @@ class _CreateGroupState extends State<CreateGroup> {
 
   Future<void> handleSubmit() async {
     if (memberList.isEmpty) {
-      print("member list cannot be empty!");
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              content: const Text("Missing Members to be Added!"),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    child: const Text("close"))
+              ],
+              actionsAlignment: MainAxisAlignment.center,
+            );
+          });
       return;
     }
-
-    String jsonBody = jsonEncode(<String, List>{'member_list': memberList});
+    if (_groupNameController.text.trim().isEmpty) {
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              content: const Text("Missing Group Name1"),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    child: const Text("close"))
+              ],
+              actionsAlignment: MainAxisAlignment.center,
+            );
+          });
+      return;
+    }
+    String groupName = _groupNameController.text.trim();
+    SplitUser? currentUser = initialInfo.getCurrentUser();
+    if (currentUser != null) {
+      memberList.add(currentUser);
+    }
+    List<String> names = [];
+    for (SplitUser u in memberList) {
+      names.add(u.email);
+    }
+    String jsonBody =
+        jsonEncode(<String, dynamic>{'members': names, 'name': groupName});
 
     Response response = await sendPost(add_group_url, jsonBody);
     print(response.body);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> add_msg = jsonDecode(response.body);
+      if (add_msg['success'] == true) {
+        // String curDisplayName = add_msg['display_name'];
+        // String curUserId = add_msg['user_id'];
+        // String curUserEmail = add_msg['email'];
+        // SplitUser curUser = SplitUser(
+        //   userId: curUserId,
+        //   displayName: curDisplayName,
+        //   email: curUserEmail
+        // );
+        // addString(curUser);
+        initialInfo.groupIds.add(add_msg['group_id']);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (ctx) => GroupScreen()));
+      } else {
+        print("create failed");
+      }
+    } else {
+      throw Exception('Failed to create group.');
+    }
   }
 
   @override
@@ -113,6 +195,7 @@ class _CreateGroupState extends State<CreateGroup> {
             ),
             Row(
               children: [
+                SizedBox(width: 10),
                 Expanded(
                   child: TextField(
                     controller: _addMemberController,
@@ -134,9 +217,26 @@ class _CreateGroupState extends State<CreateGroup> {
                     ),
                   ),
                 ),
+                SizedBox(width: 10),
               ],
             ),
             SizedBox(height: 20),
+            Row(
+              children: [
+                SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    controller: _groupNameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter Group Name',
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+              ],
+            ),
+            SizedBox(height: 40),
             ElevatedButton(
               onPressed: handleSubmit,
               child: Text('Submit'),
